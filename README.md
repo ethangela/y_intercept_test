@@ -43,14 +43,14 @@ The project uses various statistical trading signal strategies to make trading d
 
 ### 3. Trading Strategies
 
-After generating trading signals, the project implements trading strategies based on the combined signals from different strategies. The strategies aim to make buy or sell decisions, considering the signals from multiple sources. These strategies are essential for real trading decisions and can be customized to meet specific trading goals.
+After generating trading signals, the project combines all the trading signals from the different strategies. The combined signals are then used to make trading decisions. The trading strategies aim to buy or sell based on the sum of the signals. Here's how the trading actions work:
 
-#### Note:
-
-Trading strategies in this project may require further customization and validation based on the specific requirements of your trading goals and risk tolerance. Backtesting and risk management are essential components of developing effective trading strategies.
-
-Please review and adapt the provided strategies to your needs and consider implementing additional risk management techniques and backtesting before using them in real trading.
-
----
-
-Feel free to further customize and expand this README to include additional details, such as data sources, assumptions, and other relevant information for your specific trading project.
+- Sum all trading signals generated from the strategies.
+- Filter out signals with an absolute sum less than or equal to 2.
+- Execute trading actions:
+  - Buy Signal: If `row['trade_signal'] > 0`, it's a buy signal.
+    - If `current_position` is 0, buy `abs(row['trade_signal'])` volumes.
+    - If `current_position` is greater than 0, buy additional volumes only when `abs(row['trade_signal'])` is stronger.
+  - Sell Signal: If `row['trade_signal'] < 0`, it's a sell signal.
+    - If `current_position` is greater than 0, sell based on the strength of `abs(row['trade_signal'])`.
+    - If `current_position` is 0, do nothing (with potential modifications in the future).
