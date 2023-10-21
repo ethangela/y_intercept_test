@@ -76,7 +76,7 @@ Parameters in trading strategies, such as window size and threshold values, and 
 With the trading strategies and executions described above, the project provides results showing the aggregate gains of the portfolio:
 
 stop-rule threshold 200:
-![Cumulative Gains Plot](cumulative_gains_200.png)
+![Cumulative Gains Plot](cumulative_gains_plot_200.png)
 
 stop-rule threshold 1000:
-![Cumulative Gains Plot](cumulative_gains_1000.png)
+![Cumulative Gains Plot](cumulative_gains_plot_1000.png)
