@@ -54,3 +54,14 @@ After generating trading signals, we combine (sum) all the trading signals from 
   - If `sell_signal > 2`:
     - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
     - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
+
+## Results
+
+With the trading strategies and executions described above, the project provides results showing the aggregate gains of the portfolio:
+![Cumulative Gains Plot](cumulative_gains_plot.png)
+
+## Future Work
+
+The trading strategies in this project can be further fine-tuned and optimized for better performance. Future work may include adjusting hyperparameters such as window size and threshold values for the trading strategies. It's important to conduct more extensive backtesting and analysis to validate and refine the strategies.
+
+Additional aspects of future work can involve implementing risk management techniques, exploring other trading strategies, and further enhancing the project for real-world trading.
