@@ -63,7 +63,7 @@ Specifically, for each stock:
   - If `current_position` is positive, we long all currently-hold stocks with the current stock price, reducing `current_balance` and resetting `current_position` to 0.
   - If `current_position` is negative, we do nothing.
  
-- We do not stop the procedure above until `current_balance` is greater than a pre-defined threshold, where a larger threshold indicates a more aggressive trading taste. 
+- We do not stop the procedure above until `current_balance` is greater than a pre-defined threshold, where a larger threshold indicates a longer time to achieve break-even but a higher potential to earn more.
  
 
 ## Future Work
