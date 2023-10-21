@@ -1,6 +1,6 @@
 # y_intercept_test
 
-## Workflow
+## Workflow (with running `trade.py`)
 
 This project follows a structured workflow for generating statistical trading signals and implementing trading strategies. The key steps in the workflow are as follows:
 
@@ -43,7 +43,7 @@ The project uses various statistical trading signal strategies to make trading d
 
 ### 3. Trading Strategies
 
-After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with a simple constraint: we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
+After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with a simple constraint for this tiny project: we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
 
 Specifically,
 - Sum all trading signals generated from the strategies, and filter out signals with an absolute sum less than or equal to 2. Specifically, we follow the trading actions:
@@ -56,7 +56,7 @@ Specifically,
     - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
     - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
 
-## Results
+## Results (with running `output.py`)
 
 With the trading strategies and executions described above, the project provides results showing the aggregate gains of the portfolio:
 ![Cumulative Gains Plot](cumulative_gains_plot.png)
