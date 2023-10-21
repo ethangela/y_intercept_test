@@ -43,18 +43,20 @@ The project uses various statistical trading signal strategies to make trading d
 
 ### 3. Trading Strategies
 
-After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with a simple constraint for this tiny project: we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
+After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with two simple setups for this tiny project: 
+- we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
+- we trade across all stocks. In other words, our portfolio contains all stocks provided.
 
-Specifically,
+Specifically, for each stock:
 - Sum all trading signals generated from the strategies, and filter out signals with an absolute sum less than or equal to 2.
 - Initialise `current_balance` = 0
 - Initialise `current_position` = 0
-  - If `buy_signal > 2`:
-    - If `current_position` is 0, buy `abs(buy_signal)` volumes with current price.
-    - If `current_position` is greater than 0, buy additional volumes only when `abs(buy_signal)` is stronger.
-  - If `sell_signal > 2`:
-    - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
-    - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
+- If `buy_signal > 2`:
+  - If `current_position` is 0, buy `abs(buy_signal)` volumes with current price.
+  - If `current_position` is greater than 0, buy additional volumes only when `abs(buy_signal)` is stronger.
+- If `sell_signal > 2`:
+  - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
+  - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
 
 ## Results (with running `output.py`)
 
