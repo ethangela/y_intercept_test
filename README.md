@@ -80,3 +80,6 @@ stop-rule threshold 200:
 
 stop-rule threshold 1000:
 ![Cumulative Gains Plot](cumulative_gains_plot_1000.png)
+
+stop-rule threshold 2000:
+![Cumulative Gains Plot](cumulative_gains_plot_2000.png)
