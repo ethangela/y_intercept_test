@@ -43,8 +43,9 @@ The project uses various statistical trading signal strategies to make trading d
 
 ### 3. Trading Strategies
 
-After generating trading signals, we combine (sum) all the trading signals from the different strategies:
+After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with a simple constraint: we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
 
+Specifically,
 - Sum all trading signals generated from the strategies, and filter out signals with an absolute sum less than or equal to 2. Specifically, we follow the trading actions:
 - `current_balance` = 0
 - `current_position` = 0
@@ -62,6 +63,4 @@ With the trading strategies and executions described above, the project provides
 
 ## Future Work
 
-The trading strategies in this project can be further fine-tuned and optimized for better performance. Future work may include adjusting hyperparameters such as window size and threshold values for the trading strategies. It's important to conduct more extensive backtesting and analysis to validate and refine the strategies.
-
-Additional aspects of future work can involve implementing risk management techniques, exploring other trading strategies, and further enhancing the project for real-world trading.
+Parameters in trading strategies, such as window size and threshold values, can be further fine-tuned given more time and extensive backtesting.
