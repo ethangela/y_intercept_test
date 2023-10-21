@@ -44,25 +44,39 @@ The project uses various statistical trading signal strategies to make trading d
 ### 3. Trading Strategies
 
 After generating trading signals, we combine (sum) all the trading signals from the different strategies and execute a trading plan with two simple setups for this tiny project: 
-- we can only long stocks initially, and we can only short stocks if we currently hold them. In simpler terms, we cannot engage in short selling, which involves borrowing stocks to short and repurchasing them later to cover the loan.
-- we trade across all stocks. In other words, our portfolio contains all stocks provided.
+- In the beginning, we can long stocks and borrow stocks to short, for which we repurchase them later to cover the loan.
+- we trade across all stocks. In other words, our portfolio contains all the stocks provided.
 
 Specifically, for each stock:
-- Sum all trading signals generated from the strategies and filter out signals with an absolute sum less than or equal to 2, resulting in two indicators: `buy_signal` and `sell_signal`.
-- Initialise `current_balance` = 0
-- Initialise `current_position` = 0
-- If `buy_signal`:
-  - If `current_position` is 0, buy `abs(buy_signal)` volumes with current price.
-  - If `current_position` is greater than 0, buy additional volumes only when `abs(buy_signal)` is stronger.
-- If `sell_signal`:
-  - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
-  - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
+- Sum all trading signals generated from the strategies and filter out the aggregated `buy_signal` (`sell_signal`) whose absolute value is less than or equal to 2 (1).
+
+- Initialize `current_balance`, whcih represents the current balance available for trading, to 0.
+- Initialize `current_position`, which indicates the current stock position held in the portfolio, to 0.
+
+- If a `buy_signal` is presented:
+  - If `current_position` is 0, we long the stock with the current stock price and unit volume, reducing `current_balance` and resulting in positive `current_position`.
+  - If `current_position` is negative, we short all currently-hold stocks with the current stock price, increasing `current_balance` and resetting `current_position` to 0.
+  - If `current_position` is positive, we do nothing.
+
+- If a `sell_signal` is presented:
+  - If `current_position` is 0, we short the stock with the current stock price and unit volume, increasing `current_balance` and resulting in negative `current_position`.
+  - If `current_position` is positive, we long all currently-hold stocks with the current stock price, reducing `current_balance` and resetting `current_position` to 0.
+  - If `current_position` is negative, we do nothing.
+ 
+- We do not stop the procedure above until `current_balance` is greater than a pre-defined threshold, where a larger threshold indicates a more aggressive trading taste. 
+ 
+
+## Future Work
+
+Parameters in trading strategies, such as window size and threshold values, and those in trading executions, such as trading volume and stop-rule threshold, can be further fine-tuned given more time and extensive backtesting.
+
 
 ## Results (with running `output.py`)
 
 With the trading strategies and executions described above, the project provides results showing the aggregate gains of the portfolio:
-![Cumulative Gains Plot](cumulative_gains_plot.png)
 
-## Future Work
+stop-rule threshold 200:
+![Cumulative Gains Plot](cumulative_gains_200.png)
 
-Parameters in trading strategies, such as window size and threshold values, can be further fine-tuned given more time and extensive backtesting.
+stop-rule threshold 1000:
+![Cumulative Gains Plot](cumulative_gains_1000.png)
