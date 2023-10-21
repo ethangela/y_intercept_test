@@ -223,7 +223,7 @@ for stock in tqdm(unique_tickers.tolist()):
     )
 
     #filter out small trading signals #TODO: threshold 2 can be fine-tuned in the future
-    data['trade_signal'] = data['combined_signal'].apply(lambda x: x if abs(x) > 2 else 0)
+    data['trade_signal'] = data['combined_signal'].apply(lambda x: x if x > 2 or x < -1 else 0)
     
     #trade actions
     def calculate_cumulative_gains(df):
@@ -234,36 +234,37 @@ for stock in tqdm(unique_tickers.tolist()):
         price_at_entry = 0  #price at which we entered a position
 
         for _, row in df.iterrows():
-            if row['trade_signal'] > 0:  #buy signal
-                if current_position == 0: #buy when current_position = 0, the volume to buy equals row['trade_signal']
-                    current_position += row['trade_signal']
-                    price_at_entry = row['last']
-                    current_balance -= current_position * price_at_entry
-                    max_buy = abs(row['trade_signal'])
-                elif current_position > 0: #buy additional volums only when abs(row['trade_signal']) is stronger
-                    if abs(row['trade_signal']) > max_buy:
+            
+            if current_balance > 1000: #TODO tune-able parameter, where a larger value indicates a more aggressive strategy 
+                current_position = current_position
+                current_balance = current_balance
+            
+            else:
+                if row['trade_signal'] > 0:  #buy signal
+                    if current_position == 0: 
                         current_position += row['trade_signal']
                         price_at_entry = row['last']
                         current_balance -= current_position * price_at_entry
-                        max_buy = abs(row['trade_signal'])
-                    else:
+                    elif current_position > 0: 
                         current_position = current_position
                         current_balance = current_balance
+                    elif current_position < 0: 
+                        price_at_entry = row['last']
+                        current_balance -= current_position * price_at_entry
+                        current_position = 0
 
-            elif row['trade_signal'] < 0:  #sell signal
-                if current_position > 0: #sell when current_position > 0, the volume to sell depends on the strength of abs(row['trade_signal'])
-                    if abs(row['trade_signal']) > max_buy:
+                elif row['trade_signal'] < 0:  #sell signal
+                    if current_position == 0: 
+                        current_position += row['trade_signal']
+                        price_at_entry = row['last']
+                        current_balance += current_position * price_at_entry  
+                    elif current_position > 0: 
                         price_at_entry = row['last']
                         current_balance += current_position * price_at_entry
                         current_position = 0
-                    else:
-                        current_position -= row['trade_signal']
-                        price_at_entry = row['last']
-                        current_balance += current_position * price_at_entry
-
-                elif current_position == 0: #do nothing #TODO: can be modifed in the future, e.g, borrow stocks to short  
-                    current_position = current_position
-                    current_balance = current_balance
+                    elif current_position < 0: 
+                        current_position = current_position
+                        current_balance = current_balance
 
             cumulative_gains.append(current_balance)
             cumulative_stocks.append(current_position)
@@ -275,16 +276,12 @@ for stock in tqdm(unique_tickers.tolist()):
 
     #save the results
     if count == 0:
-        tqdm.write(f'stock {stock} trading completed.')
         data.to_pickle('data_new.pkl')
     else:
         df_final = pd.read_pickle('data_new.pkl')
         df_final = pd.concat([df_final, data], ignore_index=True)
         df_final.to_pickle('data_new.pkl')
     count += 1
-
-        
-
 
 
     
