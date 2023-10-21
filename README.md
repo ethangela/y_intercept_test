@@ -48,13 +48,13 @@ After generating trading signals, we combine (sum) all the trading signals from 
 - we trade across all stocks. In other words, our portfolio contains all stocks provided.
 
 Specifically, for each stock:
-- Sum all trading signals generated from the strategies, and filter out signals with an absolute sum less than or equal to 2.
+- Sum all trading signals generated from the strategies and filter out signals with an absolute sum less than or equal to 2, resulting in two indicators: `buy_signal` and `sell_signal`.
 - Initialise `current_balance` = 0
 - Initialise `current_position` = 0
-- If `buy_signal > 2`:
+- If `buy_signal`:
   - If `current_position` is 0, buy `abs(buy_signal)` volumes with current price.
   - If `current_position` is greater than 0, buy additional volumes only when `abs(buy_signal)` is stronger.
-- If `sell_signal > 2`:
+- If `sell_signal`:
   - If `current_position` is greater than 0, sell based on the strength of `abs(sell_signal)`.
   - If `current_position` is 0, do nothing (with potential modifications in the future, e.g. borrow stocks to short).
 
