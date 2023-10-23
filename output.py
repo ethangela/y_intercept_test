@@ -9,7 +9,7 @@ import statistics
 import matplotlib.pyplot as plt
 
 #read the new dataframe
-df = pd.read_pickle('data_trade.pkl')
+df = pd.read_pickle('data_new.pkl')
 df.to_csv('data_trade.csv', index=False)
 
 # Group the dataframe by 'date' and sum 'cumulative_gains' within each group
